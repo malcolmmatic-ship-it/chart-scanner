@@ -7,7 +7,7 @@ app.set('trust proxy', 1);
 app.use(express.json({ limit: '6mb' }));
 
 const KEY = process.env.GEMINI_API_KEY;
-const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+const MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
 const FREE_PER_DAY = +process.env.FREE_PER_DAY || 3;
 const PORT = process.env.PORT || 3000;
 if (!KEY) { console.error('Set GEMINI_API_KEY'); process.exit(1); }
@@ -98,7 +98,7 @@ ul{padding-left:18px;margin:6px 0;color:var(--m);font-size:13px}.err{color:var(-
 <p class="dis">Educational analysis only. Not financial advice. Trading carries risk of loss.</p></div>
 <script>
 const $=i=>document.getElementById(i);let img=null;
-const esc=s=>String(s==null?'â':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const esc=s=>String(s==null?'—':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function load(file){if(!file||!file.type.startsWith('image/'))return;const u=URL.createObjectURL(file),im=new Image();
 im.onload=()=>{const k=Math.min(1,1600/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;
 c.getContext('2d').drawImage(im,0,0,c.width,c.height);img=c.toDataURL('image/jpeg',.85);$('ph').innerHTML='<img src="'+u+'">';$('go').disabled=false};im.src=u}
@@ -112,8 +112,8 @@ try{const r=await fetch('/api/analyze',{method:'POST',headers:{'content-type':'a
 const j=await r.json();clearInterval(t);if(!r.ok)throw new Error(j.error||'Failed');step(3);prog(100);show(j.result);$('left').textContent=j.left+' free scans left today'}
 catch(e){clearInterval(t);$('scan').style.display='none';$('err').style.display='block';$('err').textContent=e.message}
 $('go').disabled=false};
-function show(r){const d=['BUY','SELL'].includes(r.direction)?r.direction:'WAIT',lv=a=>Array.isArray(a)&&a.length?a.join(', '):'â';
-$('res').innerHTML='<div style="color:var(--m);font-size:12px">'+esc(r.instrument)+' Â· '+esc(r.timeframe)+' Â· '+esc(r.trend)+'</div><div class="sig '+d+'">'+(d=='WAIT'?'NO CLEAR SETUP':d)+'</div><div class="g">'+
+function show(r){const d=['BUY','SELL'].includes(r.direction)?r.direction:'WAIT',lv=a=>Array.isArray(a)&&a.length?a.join(', '):'—';
+$('res').innerHTML='<div style="color:var(--m);font-size:12px">'+esc(r.instrument)+' · '+esc(r.timeframe)+' · '+esc(r.trend)+'</div><div class="sig '+d+'">'+(d=='WAIT'?'NO CLEAR SETUP':d)+'</div><div class="g">'+
 '<div><small>Entry</small><b>'+esc(r.entry)+'</b></div><div><small>Confidence</small><b>'+esc(r.confidence)+'%</b></div><div><small>Stop loss</small><b>'+esc(r.stop_loss)+'</b></div><div><small>Take profit</small><b>'+esc(r.take_profit)+'</b></div><div><small>Support</small><b>'+esc(lv(r.support))+'</b></div><div><small>Resistance</small><b>'+esc(lv(r.resistance))+'</b></div><div><small>R:R</small><b>'+esc(r.rr)+'</b></div></div>'+
 '<div style="font-size:13px">'+esc(r.structure)+'</div><div style="font-size:13px;margin-top:8px;color:var(--m)">'+esc(r.reasoning)+'</div><b style="font-size:13px;display:block;margin-top:10px">Risks</b><ul>'+(r.risks||[]).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
 $('res').style.display='block';$('res').scrollIntoView({behavior:'smooth'})}
