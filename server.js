@@ -7,7 +7,7 @@ app.set('trust proxy', 1);
 app.use(express.json({ limit: '6mb' }));
 
 const KEY = process.env.GEMINI_API_KEY;
-const MODEL = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+const MODEL = process.env.GEMINI_MODEL || 'gemini-3.8-flash';
 const FREE_PER_DAY = +process.env.FREE_PER_DAY || 3;
 const PORT = process.env.PORT || 3000;
 if (!KEY) { console.error('Set GEMINI_API_KEY'); process.exit(1); }
